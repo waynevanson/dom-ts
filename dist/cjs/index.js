@@ -9,4 +9,5 @@ exports.readerIOOption = require("./reader-io-option");
 exports.utilities = require("./util");
 exports.meta = require("./meta");
 exports.readerIOEither = require("./reader-io-either");
+var check = 2;
 //# sourceMappingURL=index.js.map

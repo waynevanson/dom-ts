@@ -1,6 +1,6 @@
 {
   "name": "dom-ts",
-  "version": "10.0.0",
+  "version": "1.0.0",
   "homepage": "https://waynevanson.github.io/dom-ts",
   "description": "fp-ts binding for the DOM",
   "main": "dist/cjs/index.js",

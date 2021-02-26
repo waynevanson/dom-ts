@@ -14,4 +14,5 @@ import * as meta_1 from "./meta";
 export { meta_1 as meta };
 import * as readerIOEither_1 from "./reader-io-either";
 export { readerIOEither_1 as readerIOEither };
+const check = 2;
 //# sourceMappingURL=index.js.map
