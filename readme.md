@@ -1,7 +1,5 @@
 # dom-ts
 
-PLEASE NOTE this is not ready for production use. There's still a lot to do for DX to make it friendly.
-
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 [`fp-ts`](https://github.com/gcanti/fp-ts) compatible implementations of DOM interfaces and related API's, as documented under [DOM interfaces at Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model).
@@ -27,7 +25,99 @@ npm install dom-ts fp-ts fp-ts-contrib
 
 Each DOM interface (`Node`, `ChildNode`,`Event`)
 
-## Configuration
+## Usage
+
+### Examples
+
+### Add Custom Elements, Events
+
+The modules under `dom-ts/meta` exports maps that define relationships between the following:
+
+- `tagName`
+- `Element`
+- `EventMap`
+
+We use this to infer some types from each other, like `EventMap` from `Element`
+
+This is currently unsupported due to the way that Typescript has structured it's type definitions.
+An issue has been opened up outlining these concerns in [Microsoft/Typescript #40689](https://github.com/microsoft/TypeScript/issues/40689)
+
+### Custom Elements and Custom Events
+
+We need to use _module augmentation_ via _declaration merging_ in order to have the new types available in the API.
+
+#### Defining Elements
+
+We have to define an element, by providing a `tagName`, `Element` and `EventMap`
+
+Define an Element. We'll define a `HTMLGroovyElement`, named after the Emperors' New Groove
+
+```ts
+import { either as E } from "fp-ts"
+import { pipe } from "fp-ts/lib/function"
+import { document, eventTarget, readerIOEither as RIOE } from "../src"
+import { MetaHTMLElement } from "../src/meta"
+
+/**
+ * @summary
+ * This element is always groovy,
+ * emitting the `groove` event every 4 seconds.
+ */
+export interface HTMLGroovyElement extends HTMLElement {}
+
+export interface GrooveEvent {
+  grooviness: number
+  energy: number
+  flow: number
+  espanol: boolean
+}
+
+export interface HTMLGroovyElementEventMap extends HTMLElementEventMap {
+  groove: GrooveEvent
+}
+
+export type MetaHTMLGroovyElement = MetaHTMLElement<
+  "groovy",
+  HTMLGroovyElement,
+  HTMLGroovyElementEventMap
+>
+
+declare module "../src/meta" {
+  export interface Custom {
+    // Only HTMLElement's
+    HTMLElements: MetaHTMLGroovyElement
+
+    // Only SVGElement's
+    // SVGElements: ...
+
+    // Non {HTML,SVG}Element's
+    // Elements: ...
+  }
+}
+
+// Now we get intellisense
+
+const program = pipe(
+  document.createElement("groovy"),
+  RIOE.chainReaderIOK(
+    eventTarget.addEventListener(
+      "groove",
+      (event) => () => console.dir(event),
+      { capture: true }
+    )
+  )
+)
+
+program(globalThis.document)
+```
+
+## Compatability
+
+We only add functions for methods on interfaces.
+We don't need to add functions that get values.
+
+Deprecated interfaces and methods are displayed in this list, but are noted as deprecated. They will not be implemented.
+Obsolete interfaces and methods are not displayed in this list.
 
 ### Legend
 
@@ -38,12 +128,6 @@ Each DOM interface (`Node`, `ChildNode`,`Event`)
 |        :x:         | Unimplemented, with no plans to implement. |
 
 ### Compatibility Table
-
-We only add functions for methods on interfaces.
-We don't need to add functions that get values.
-
-Deprecated interfaces and methods are displayed in this list, but are noted as deprecated. They will not be implemented.
-Obsolete interfaces and methods are not displayed in this list.
 
 | Status | Methods                     | Base Interface        | Notes                                                                                       |
 | :----: | :-------------------------- | :-------------------- | :------------------------------------------------------------------------------------------ |
@@ -184,92 +268,6 @@ Obsolete interfaces and methods are not displayed in this list.
 |  :o:   |                             | Window                |                                                                                             |
 |  :o:   |                             | Worker                |                                                                                             |
 |  :o:   |                             | XMLDocument           |                                                                                             |
-
-## Usage
-
-### Examples
-
-### Add Custom Elements, Events
-
-The modules under `dom-ts/meta` exports maps that define relationships between the following:
-
-- `tagName`
-- `Element`
-- `EventMap`
-
-We use this to infer some types from each other, like `EventMap` from `Element`
-
-This is currently unsupported due to the way that Typescript has structured it's type definitions.
-An issue has been opened up outlining these concerns in [Microsoft/Typescript #40689](https://github.com/microsoft/TypeScript/issues/40689)
-
-### Custom Elements and Custom Events
-
-We need to use _module augmentation_ via _declaration merging_ in order to have the new types available in the API.
-
-#### Defining Elements
-
-We have to define an element, by providing a `tagName`, `Element` and `EventMap`
-
-Define an Element. We'll define a `HTMLGroovyElement`, named after the Emperors' New Groove
-
-```ts
-import { either as E } from "fp-ts"
-import { pipe } from "fp-ts/lib/function"
-import { document, eventTarget, readerIOEither as RIOE } from "../src"
-import { MetaHTMLElement } from "../src/meta"
-
-/**
- * @summary
- * This element is always groovy,
- * emitting the `groove` event every 4 seconds.
- */
-export interface HTMLGroovyElement extends HTMLElement {}
-
-export interface GrooveEvent {
-  grooviness: number
-  energy: number
-  flow: number
-  espanol: boolean
-}
-
-export interface HTMLGroovyElementEventMap extends HTMLElementEventMap {
-  groove: GrooveEvent
-}
-
-export type MetaHTMLGroovyElement = MetaHTMLElement<
-  "groovy",
-  HTMLGroovyElement,
-  HTMLGroovyElementEventMap
->
-
-declare module "../src/meta" {
-  export interface Custom {
-    // Only HTMLElement's
-    HTMLElements: MetaHTMLGroovyElement
-
-    // Only SVGElement's
-    // SVGElements: ...
-
-    // Non {HTML,SVG}Element's
-    // Elements
-  }
-}
-
-// Now we get intellisense
-
-const program = pipe(
-  document.createElement("groovy"),
-  RIOE.chainReaderIOK(
-    eventTarget.addEventListener(
-      "groove",
-      (event) => () => console.dir(event),
-      { capture: true }
-    )
-  )
-)
-
-program(globalThis.document)
-```
 
 ## Upcoming
 
