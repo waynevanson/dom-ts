@@ -8,8 +8,8 @@ PLEASE NOTE this is not ready for production use. There's still a lot to do for 
 
 ## Installation
 
-There are two release branches: `@latest` and `@next`.
-If you'd like to try the latest features, replace `dom-ts` with `dom-ts@next`.
+There are two release branches: `@latest` and `@beta`.
+If you'd like to try the latest features, replace `dom-ts` with `dom-ts@beta`.
 
 ### Yarn
 
