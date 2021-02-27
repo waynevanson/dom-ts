@@ -4,6 +4,25 @@
 
 [`fp-ts`](https://github.com/gcanti/fp-ts) compatible implementations of DOM interfaces and related API's, as documented under [DOM interfaces at Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model).
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Installation](#installation)
+  - [Yarn](#yarn)
+  - [NPM](#npm)
+- [Library Structure](#library-structure)
+- [Usage](#usage)
+  - [Examples](#examples)
+  - [Add Custom Elements, Events](#add-custom-elements-events)
+  - [Custom Elements and Custom Events](#custom-elements-and-custom-events)
+    - [Defining Elements](#defining-elements)
+- [Compatability](#compatability)
+  - [Legend](#legend)
+  - [Compatibility Table](#compatibility-table)
+- [Upcoming](#upcoming)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Installation
 
 There are two release branches: `@latest` and `@beta`.
