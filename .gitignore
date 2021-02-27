@@ -1,0 +1,5 @@
+node_modules
+.temp
+yarn-error.log
+.parcel-cache
+.cache

@@ -1,0 +1,40 @@
+# build, test always.
+# release if on main branch
+name: Test, Build and Release
+
+on: [pull_request, push]
+
+jobs:
+  main:
+    name: Main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Test
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+
+      - name: Release
+        if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/next' && success() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn semantic-release

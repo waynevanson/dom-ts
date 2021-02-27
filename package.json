@@ -1,0 +1,82 @@
+{
+  "name": "dom-ts",
+  "version": "10.0.0",
+  "homepage": "https://waynevanson.github.io/dom-ts",
+  "description": "fp-ts binding for the DOM",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waynevanson/dom-ts.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "commit": "cz",
+    "build": "rm -rf dist && npm-run-all --parallel build:*",
+    "build:cjs": "tsc -p .config/tsconfig.cjs.json",
+    "build:es6": "tsc -p .config/tsconfig.es6.json",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "fp-ts": "^2.8.3",
+    "fp-ts-contrib": "^0.1.21",
+    "typescript": "^4.0.0."
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    },
+    "fp-ts": {
+      "optional": false
+    },
+    "fp-ts-contrib": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.31",
+    "fp-ts": "^2.9.5",
+    "fp-ts-contrib": "^0.1.21",
+    "jest": "^26.6.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "semantic-release": "^17.3.9",
+    "ts-jest": "^26.5.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5"
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "beta",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json",
+            "dist"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  }
+}
